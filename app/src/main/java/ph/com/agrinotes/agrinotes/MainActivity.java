@@ -3,6 +3,7 @@ package ph.com.agrinotes.agrinotes;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -19,9 +20,12 @@ import android.view.MenuItem;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.security.Signature;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         auth = FirebaseAuth.getInstance();
         // get the user
         currentUser = auth.getCurrentUser();
-        if( currentUser == null)
+        if(currentUser == null)
         {
             Log.d(TAG, "No current user");
             createSignInIntent();
@@ -75,16 +79,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-        }
-        if(currentUser == null)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(true);
-            builder.setTitle("WARNING");
-            builder.setMessage("You need to sign-in in order to use the app");
-            builder.setPositiveButton("Sign-In", dialogListener);
-            builder.setNegativeButton("Exit", dialogListener);
-            builder.show();
         }
     }
 
@@ -117,8 +111,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                break;
+            case R.id.action_logout:
+                signOut();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -178,5 +176,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 builder.show();
             }
         }
+    }
+    public void signOut() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "Sign-out Complete");
+                        createSignInIntent();
+                    }
+                });
     }
 }
