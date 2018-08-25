@@ -2,9 +2,21 @@
     <string name="app_name">Agri Notes</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Agri Notes</string>
+    <string name="nav_header_subtitle">Note taking application with smart crop and disease identification.</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="no_exit_this_feature">No, Exit this Feature</string>
+    <string name="permission_denied">Permission Denied!</string>
+    <string name="permission_not_granted">Permission Not Granted!</string>
+    <string name="location_permission_concise_explanation">This permission is needed for determining your current location for mapping your notes.</string>
+    <string name="permission_denied_cant_use_the_feature">The location permission was denied and you cannot use this feature without granting the location permission. The location permission is needed by the application to determine your precise location so that it will be included to the note.</string>
+    <string name="permission_not_granted_cant_use_the_feature">The location permission was not granted and you cannot use this feature without granting the location permission. The location permission is needed by the application to determine your precise location so that it will be included to the note. Tap to again the open settings to grant the permission at the device\'s settings and no to exit this feature.</string>
+    <string name="you_need_to_sign_in">You need to sign-in using Gmail or Google account in order to use the app.</string>
+    <string name="notes">Notes</string>
+    <string name="map">Map</string>
+    <string name="add_note">Add Note</string>
+
 </resources>
