@@ -14,10 +14,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String AGRI_COLUMN_ID= "id";
     private static final String AGRI_COLUMN_EMAIL= "user_email";
     private static final String AGRI_COLUMN_CONTENT= "content";
-    private static final String AGRI_COLUMN_IMAGE= "image";
-    private static final String AGRI_COLUMN_LABEL= "labels";
-    private static final String AGRI_COLUMN_LOCATIONLAT= "location_lat";
-    private static final String AGRI_COLUMN_LOCATIONLONG= "location_long";
+//    private static final String AGRI_COLUMN_IMAGE= "image";
+//    private static final String AGRI_COLUMN_LABEL= "labels";
+//    private static final String AGRI_COLUMN_LOCATIONLAT= "location_lat";
+//    private static final String AGRI_COLUMN_LOCATIONLONG= "location_long";
     private static final String AGRI_COLUMN_TITLE= "title";
 
     public DBHelper(Context context){
