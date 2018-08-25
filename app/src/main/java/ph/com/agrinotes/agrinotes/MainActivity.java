@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private FirebaseUser currentUser;
+    private DBHelper db;
 
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
@@ -125,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        db = new DBHelper(this);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -293,8 +296,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
         }
-
-        /*
         //noinspection SimplifiableIfStatement
         switch(id){
             case R.id.action_settings:
@@ -303,8 +304,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 signOut();
                 break;
         }
-        */
-
         return super.onOptionsItemSelected(item);
     }
 
