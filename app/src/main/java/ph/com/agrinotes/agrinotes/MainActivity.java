@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -30,27 +31,70 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 import ph.com.agrinotes.agrinotes.utils.PermissionsUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "MainActivity";
+    public static final long LOCATION_REQUEST_INTERVAL = 3000;
+    public static final long LOCATION_REQUEST_FASTEST_INTERVAL = 1000;
 
-    private FirebaseAuth auth;
-    private LocationCallback locationCallback;
-    private FusedLocationProviderClient fusedLocationClient;
-    private LocationRequest locationRequest;
     private FragmentManager fragmentManager;
     private DrawerLayout drawerLayout = null;
 
     // Fragments
     private NotesFragment notesFragment = new NotesFragment();
     private MapFragment mapFragment = new MapFragment();
+    private Location lastKnowLocation = null;
+    private Location currentLocation = null;
+
+    private FirebaseAuth auth;
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationRequest locationRequest;
+
+    private LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+
+            List<Location> locations = locationResult.getLocations();
+
+            if(locations.size() == 1) {
+                currentLocation = locations.get(0);
+            }
+
+            if (locationResult == null) {
+                return;
+            }
+
+            for (Location location : locationResult.getLocations()) {
+                // Update UI with location data
+                // ...
+            }
+
+            Log.d(TAG, "onLocationResult");
+        }
+
+        @Override
+        public void onLocationAvailability(LocationAvailability locationAvailability) {
+            if(currentLocation != null){
+
+            } else {
+
+            }
+
+            Log.d(TAG, "onLocationAvailability");
+        }
+    };;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //check the permission for the Access Fine Location
@@ -74,6 +118,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.location_permission_concise_explanation,
                 4000,
                 PermissionsUtil.ACCESS_FINE_LOCATION);
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(LOCATION_REQUEST_INTERVAL);
+        locationRequest.setFastestInterval(LOCATION_REQUEST_FASTEST_INTERVAL);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if(PermissionsUtil.checkPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)){
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                // Logic to handle location object
+
+                                lastKnowLocation = location;
+                                Log.d(TAG, "onSuccess - LastKnowLocation");
+                            }
+                        }
+                    });
+        }
 
         // initialize firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -89,6 +155,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setCurrentFragment(firstItem.getItemId());
         firstItem.setChecked(true);
         setTitle(firstItem.getTitle());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocationUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    private void startLocationUpdates() {
+        if(PermissionsUtil.checkPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)){
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        }
+    }
+
+    private void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
     private void setCurrentFragment(int itemId) {
@@ -187,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     //permission was granted and executed immediately the features.
                     Log.i(TAG, permissions[0]+" granted!");
 
-
+                    startLocationUpdates();
                 } else {
                     //showPermissionExplanationDialog(R.string.permission_denied,R.string.permission_denied_cant_use_the_feature);
                     PermissionsUtil.showPermissionExplanationDialog(
@@ -213,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if(permissionState == PackageManager.PERMISSION_GRANTED){
                 // do nothing
+                startLocationUpdates();
             } else {
                 // showPermissionExplanationDialog(R.string.permission_not_granted,R.string.permission_not_granted_cant_use_the_feature);
                 PermissionsUtil.showPermissionExplanationDialog(
