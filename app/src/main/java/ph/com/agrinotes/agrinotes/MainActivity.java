@@ -41,13 +41,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 import java.util.List;
-
 import ph.com.agrinotes.agrinotes.utils.PermissionsUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "MainActivity";
     public static final long LOCATION_REQUEST_INTERVAL = 3000;
     public static final long LOCATION_REQUEST_FASTEST_INTERVAL = 1000;
+    public static final int TAKE_NOTES_REQUEST_CODE = 101;
 
     private FragmentManager fragmentManager;
     private DrawerLayout drawerLayout = null;
@@ -278,10 +278,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        switch (id){
+            case R.id.action_add_note:
+
+                Intent intent = new Intent(this, TakeNotesActivity.class);
+                startActivityForResult(intent, TAKE_NOTES_REQUEST_CODE);
+
+                break;
+        }
+
+        /*
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }

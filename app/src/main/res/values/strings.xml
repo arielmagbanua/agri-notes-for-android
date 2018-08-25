@@ -16,4 +16,5 @@
     <string name="you_need_to_sign_in">You need to sign-in using Gmail or Google account in order to use the app.</string>
     <string name="notes">Notes</string>
     <string name="map">Map</string>
+    <string name="add_note">Add Note</string>
 </resources>
