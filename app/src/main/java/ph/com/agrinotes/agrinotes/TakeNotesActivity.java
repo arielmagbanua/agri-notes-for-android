@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,17 +26,46 @@ public class TakeNotesActivity extends AppCompatActivity {
     private String currentPhotoPath = "";
     private String selectedImagePath = "";
 
+    private Toolbar imageToolbar = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_note);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        imageToolbar = findViewById(R.id.image_toolbar);
+        imageToolbar.inflateMenu(R.menu.image_toolbar_menu);
+        Menu imageToolbarMenu = imageToolbar.getMenu();
+        MenuItem takePictureMenuItem = imageToolbarMenu.findItem(R.id.action_take_picture);
+        MenuItem pickPictureMenuItem = imageToolbarMenu.findItem(R.id.action_pick_picture);
+
+        // set up
+        takePictureMenuItem.setOnMenuItemClickListener(imageToolbarMenuItemClickListener);
+        pickPictureMenuItem.setOnMenuItemClickListener(imageToolbarMenuItemClickListener);
     }
+
+    private MenuItem.OnMenuItemClickListener imageToolbarMenuItemClickListener = new MenuItem.OnMenuItemClickListener(){
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.action_take_picture:
+                    dispatchTakePictureIntent();
+                    break;
+                case R.id.action_pick_picture:
+                    pickAnImage();
+                    break;
+            }
+
+            return true;
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.take_notes_menu, menu);
+        getMenuInflater().inflate(R.menu.take_note_menu, menu);
         return true;
     }
 
@@ -44,12 +74,9 @@ public class TakeNotesActivity extends AppCompatActivity {
         int itemID = item.getItemId();
 
         switch (itemID){
-            case R.id.action_take_picture:
-                dispatchTakePictureIntent();
-                return true;
+            case R.id.action_save_note:
+                // Save the note here
 
-            case R.id.action_pick_picture:
-                pickAnImage();
                 return true;
         }
 
@@ -91,7 +118,7 @@ public class TakeNotesActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
+        selectedImagePath = image.getAbsolutePath();
         return image;
     }
 
@@ -116,14 +143,21 @@ public class TakeNotesActivity extends AppCompatActivity {
         if(Activity.RESULT_OK == resultCode){
             switch (requestCode){
                 case REQUEST_TAKE_PHOTO:
+                    classifyImage(selectedImagePath);
                     break;
 
                 case REQUEST_PICK_IMAGE:
                     Uri selectedImageUri = data.getData();
                     selectedImagePath = getRealPathFromURI(selectedImageUri);
+                    Log.d(TAG, selectedImagePath);
+                    classifyImage(selectedImagePath);
                     break;
             }
         }
+    }
+
+    private void classifyImage(String imagePath){
+
     }
 
     /**
