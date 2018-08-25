@@ -22,4 +22,5 @@
     <string name="take_picture">Take Picture</string>
     <string name="pick_an_image">Pick an Image</string>
     <string name="select_an_image">Select an Image</string>
+    <string name="save_note">Save Note</string>
 </resources>
