@@ -10,26 +10,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
@@ -39,7 +39,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
+import java.util.Arrays;
 import java.util.List;
 
 import ph.com.agrinotes.agrinotes.utils.PermissionsUtil;
@@ -55,12 +55,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Fragments
     private NotesFragment notesFragment = new NotesFragment();
     private MapFragment mapFragment = new MapFragment();
+
     private Location lastKnowLocation = null;
     private Location currentLocation = null;
-
+    private static final int RC_SIGN_IN = 123 ;
     private FirebaseAuth auth;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
+    private FirebaseUser currentUser;
 
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Log.d(TAG, "onLocationAvailability");
         }
-    };;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +152,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         auth = FirebaseAuth.getInstance();
 
         // get the user
-        FirebaseUser currentUser = auth.getCurrentUser();
+        currentUser = auth.getCurrentUser();
+        if( currentUser == null) {
+            Log.d(TAG, "No current user");
+            createSignInIntent();
+        }
 
         //set initially the findYourJeepFragment
         fragmentManager = getSupportFragmentManager();
@@ -232,7 +238,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+        if(currentUser == null)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true);
+            builder.setTitle("App Sign-In");
+            builder.setMessage(getResources().getString(R.string.you_need_to_sign_in));
+            builder.setPositiveButton("Sign-In", dialogListener);
+            builder.setNegativeButton("No Exit the App", dialogListener);
+            builder.show();
+        }
     }
+
+    private DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    createSignInIntent();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    finish();
+                    break;
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -264,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setCurrentFragment(id);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -316,6 +346,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         locationPermissionDialogClickListener,
                         locationPermissionDialogClickListener,
                         false);
+            }
+        } else if(requestCode == RC_SIGN_IN){
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                Log.d(TAG, "Successful Login");
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            } else {
+                Log.d(TAG, "Unsuccessful Login");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(true);
+                builder.setTitle("WARNING");
+                builder.setMessage("You need to sign-in in order to use the app");
+                builder.setPositiveButton("Sign-In", dialogListener);
+                builder.setNegativeButton("Exit", dialogListener);
+                builder.show();
             }
         }
     }
@@ -384,4 +430,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     };
+
+    public void createSignInIntent(){
+        List<AuthUI.IdpConfig> providers = Arrays.asList(new AuthUI.IdpConfig.GoogleBuilder().build());
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+    }
 }

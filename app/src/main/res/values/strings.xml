@@ -13,4 +13,5 @@
     <string name="location_permission_concise_explanation">This permission is needed for determining your current location for mapping your notes.</string>
     <string name="permission_denied_cant_use_the_feature">The location permission was denied and you cannot use this feature without granting the location permission. The location permission is needed by the application to determine your precise location so that it will be included to the note.</string>
     <string name="permission_not_granted_cant_use_the_feature">The location permission was not granted and you cannot use this feature without granting the location permission. The location permission is needed by the application to determine your precise location so that it will be included to the note. Tap to again the open settings to grant the permission at the device\'s settings and no to exit this feature.</string>
+    <string name="you_need_to_sign_in">You need to sign-in using Gmail or Google account in order to use the app.</string>
 </resources>

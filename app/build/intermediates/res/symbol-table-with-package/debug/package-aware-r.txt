@@ -1423,6 +1423,7 @@ int string search_menu_title 0x7f0e0095
 int string status_bar_notification_info_overflow 0x7f0e0096
 int string twitter_consumer_key 0x7f0e0097
 int string twitter_consumer_secret 0x7f0e0098
+int string you_need_to_sign_in 0x7f0e0099
 int style AlertDialog_AppCompat 0x7f0f0000
 int style AlertDialog_AppCompat_Light 0x7f0f0001
 int style Animation_AppCompat_Dialog 0x7f0f0002

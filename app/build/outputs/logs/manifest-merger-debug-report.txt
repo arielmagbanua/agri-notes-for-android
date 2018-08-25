@@ -44,8 +44,8 @@ MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\Ariel\.gradle
 MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\7e9695e384c18eab6c3d158a01c340da\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\38e7d1fce5e9d89e320e58fe5e802505\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:transition:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\94df013b7196d38d1928eb7c842e8bce\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\49503daacaff26d2fe1063ca91769383\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\7662518cca3a0d2e00a74408831e5aa0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\49503daacaff26d2fe1063ca91769383\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-compat:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\4016e488afbd9f31a4c1a321511dbb4a\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:cardview-v7:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.1.1.aar\1c7c6767e9831974cc345346f41ba87f\AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.lifecycle:livedata:1.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\livedata-1.1.1.aar\63bda830742841dbf9396b5e06af4285\AndroidManifest.xml:17:1-22:12
@@ -278,10 +278,10 @@ MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\Ariel\.grad
 MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\38e7d1fce5e9d89e320e58fe5e802505\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:transition:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\94df013b7196d38d1928eb7c842e8bce\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:transition:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\94df013b7196d38d1928eb7c842e8bce\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\49503daacaff26d2fe1063ca91769383\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\49503daacaff26d2fe1063ca91769383\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\7662518cca3a0d2e00a74408831e5aa0\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\7662518cca3a0d2e00a74408831e5aa0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\49503daacaff26d2fe1063ca91769383\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\49503daacaff26d2fe1063ca91769383\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-compat:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\4016e488afbd9f31a4c1a321511dbb4a\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-compat:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\4016e488afbd9f31a4c1a321511dbb4a\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:cardview-v7:27.1.1] C:\Users\Ariel\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.1.1.aar\1c7c6767e9831974cc345346f41ba87f\AndroidManifest.xml:20:5-44
