@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">864600229579-pmdiv52vb6sgmijnbtil9cearg7003a5.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://agri-notes.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">864600229579</string>
+    <string name="google_api_key" translatable="false">AIzaSyBb9a83VNjFCizbgkGjjERaCp0Afklb2sM</string>
+    <string name="google_app_id" translatable="false">1:864600229579:android:b2d4635ec7fad925</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBb9a83VNjFCizbgkGjjERaCp0Afklb2sM</string>
+    <string name="google_storage_bucket" translatable="false">agri-notes.appspot.com</string>
+    <string name="project_id" translatable="false">agri-notes</string>
+</resources>

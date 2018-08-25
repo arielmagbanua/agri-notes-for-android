@@ -66,21 +66,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public void onLocationResult(LocationResult locationResult) {
 
-            List<Location> locations = locationResult.getLocations();
-
-            if(locations.size() == 1) {
-                currentLocation = locations.get(0);
-            }
-
             if (locationResult == null) {
                 return;
             }
 
+            List<Location> locations = locationResult.getLocations();
+
+            if(locations.size() == 1) {
+                currentLocation = locations.get(0);
+            } else {
+                // get the last index
+                int lastIndex = locations.size() - 1;
+                currentLocation = locations.get(lastIndex);
+            }
+
+            /*
             for (Location location : locationResult.getLocations()) {
                 // Update UI with location data
                 // ...
             }
-
+            */
             Log.d(TAG, "onLocationResult");
         }
 
