@@ -3,9 +3,13 @@ package ph.com.agrinotes.agrinotes;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +17,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class TakeNotesActivity extends AppCompatActivity {
     public static final String TAG = "TakeNotesActivity";
@@ -24,9 +34,21 @@ public class TakeNotesActivity extends AppCompatActivity {
     // private static final int REQUEST_IMAGE_CAPTURE = 211;
     private static final int REQUEST_PICK_IMAGE = 212;
     private String currentPhotoPath = "";
-    private String selectedImagePath = "";
+
+    private static final String INPUT_NAME = "input";
+    private static final String OUTPUT_NAME = "final_result";
 
     private Toolbar imageToolbar = null;
+    private ImageView imageView = null;
+    private Classifier classifier;
+    private static final int INPUT_SIZE = 224;
+    private static final int IMAGE_MEAN = 128;
+    private static final float IMAGE_STD = 128.0f;
+    // private static final String INPUT_NAME = "input";
+    // private static final String OUTPUT_NAME = "MobilenetV1/Predictions/Softmax";
+
+    private static final String MODEL_FILE = "file:///android_asset/optimized_graph.pb";
+    private static final String LABEL_FILE = "file:///android_asset/retrained_labels.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +63,22 @@ public class TakeNotesActivity extends AppCompatActivity {
         MenuItem takePictureMenuItem = imageToolbarMenu.findItem(R.id.action_take_picture);
         MenuItem pickPictureMenuItem = imageToolbarMenu.findItem(R.id.action_pick_picture);
 
+        imageView = findViewById(R.id.note_image);
+
         // set up
         takePictureMenuItem.setOnMenuItemClickListener(imageToolbarMenuItemClickListener);
         pickPictureMenuItem.setOnMenuItemClickListener(imageToolbarMenuItemClickListener);
+
+        classifier =
+                TensorFlowImageClassifier.create(
+                        getAssets(),
+                        MODEL_FILE,
+                        LABEL_FILE,
+                        INPUT_SIZE,
+                        IMAGE_MEAN,
+                        IMAGE_STD,
+                        INPUT_NAME,
+                        OUTPUT_NAME);
     }
 
     private MenuItem.OnMenuItemClickListener imageToolbarMenuItemClickListener = new MenuItem.OnMenuItemClickListener(){
@@ -52,9 +87,20 @@ public class TakeNotesActivity extends AppCompatActivity {
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()){
                 case R.id.action_take_picture:
+
+                    if(currentPhotoPath != null && currentPhotoPath.isEmpty()){
+                        showImagePlaceHolder();
+                    }
+
                     dispatchTakePictureIntent();
                     break;
                 case R.id.action_pick_picture:
+
+//                    if(currentPhotoPath != null && currentPhotoPath.isEmpty()){
+//                        // showImagePlaceHolder();
+//                        imageView.setImageDrawable(null);
+//                    }
+
                     pickAnImage();
                     break;
             }
@@ -118,7 +164,7 @@ public class TakeNotesActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        selectedImagePath = image.getAbsolutePath();
+        currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
@@ -143,21 +189,83 @@ public class TakeNotesActivity extends AppCompatActivity {
         if(Activity.RESULT_OK == resultCode){
             switch (requestCode){
                 case REQUEST_TAKE_PHOTO:
-                    classifyImage(selectedImagePath);
+
+                    // classifyImage(currentPhotoPath);
+                    loadImage(currentPhotoPath);
+                    runClassifier(currentPhotoPath);
                     break;
 
                 case REQUEST_PICK_IMAGE:
                     Uri selectedImageUri = data.getData();
-                    selectedImagePath = getRealPathFromURI(selectedImageUri);
-                    Log.d(TAG, selectedImagePath);
-                    classifyImage(selectedImagePath);
+//                    selectedImagePath = getRealPathFromURI(selectedImageUri);
+//                    classifyImage(selectedImagePath);
+                    loadImage(selectedImageUri);
                     break;
             }
         }
     }
 
-    private void classifyImage(String imagePath){
+    private void runClassifier(String path) {
 
+    }
+
+    private void classifyImage(final Bitmap bitmap){
+        new Runnable() {
+            @Override
+            public void run() {
+                final long startTime = SystemClock.uptimeMillis();
+                final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+                long lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
+
+                // cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
+                // resultsView.setResults(results);
+                // requestRender();
+                // computing = false;
+            }
+        }.run();
+    }
+
+    private void loadImage(Uri imageUri){
+        try {
+            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            imageView.setImageBitmap(selectedImage);
+
+            classifyImage(selectedImage);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadImage(String path){
+
+        // Get the dimensions of the View
+        int targetW = imageView.getWidth();
+        int targetH = imageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
+        imageView.setImageBitmap(bitmap);
+
+        classifyImage(bitmap);
+    }
+
+    private void showImagePlaceHolder(){
+        imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_add_note));
     }
 
     /**

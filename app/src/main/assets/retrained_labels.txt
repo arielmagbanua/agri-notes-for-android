@@ -1,0 +1,44 @@
+avocado fruit anthracnose
+avocado fruit healthy
+avocado fruit scab
+avocado leaf algal leaf spot
+avocado leaf healthy
+avocado leaf persea mites
+banana fruit anthracnose
+banana fruit cigar end rot
+banana fruit healthy
+banana leaf healthy
+banana leaf mosaic
+banana leaf sigatoka
+banana plantains fruit healthy
+cabbage alternaria leaf spot
+cabbage aphid
+cabbage healthy
+cabbage soft rot
+carrot leaf healthy
+corn leaf cercospora leaf spot or gray leaf spot
+corn leaf common rust
+corn leaf healthy
+corn leaf northern leaf blight
+mango fruit anthracnose
+mango green fruit healthy
+mango leaf algal leaf spot
+mango leaf anthracnose
+mango leaf healthy
+papaya fruit anthracnose
+papaya fruit mildew
+papaya fruit ringspot
+papaya leaf healthy
+potato leaf early blight
+potato leaf healthy
+potato leaf late blight
+tomato leaf bacterial spot
+tomato leaf early blight
+tomato leaf healthy
+tomato leaf late blight
+tomato leaf leaf mold
+tomato leaf septoria leaf spot
+tomato leaf spider mites or two spotted spider mite
+tomato leaf target spot
+tomato leaf tomato mosaic virus
+tomato leaf tomato yellow leaf curl virus
