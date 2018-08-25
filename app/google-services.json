@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "864600229579",
+    "firebase_url": "https://agri-notes.firebaseio.com",
+    "project_id": "agri-notes",
+    "storage_bucket": "agri-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864600229579:android:b2d4635ec7fad925",
+        "android_client_info": {
+          "package_name": "ph.com.agrinotes.agrinotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864600229579-6g99bnba2c2858p2iifvmi5edilid7u8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ph.com.agrinotes.agrinotes",
+            "certificate_hash": "5a23f78e7f0308cadaa6579d62ff18d220adc948"
+          }
+        },
+        {
+          "client_id": "864600229579-dc8dh4qm6tpq9ga0l790lf3l6d9nv2oe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ph.com.agrinotes.agrinotes",
+            "certificate_hash": "6f045f96718769408bde1ab1365ee5643aa933cb"
+          }
+        },
+        {
+          "client_id": "864600229579-pmdiv52vb6sgmijnbtil9cearg7003a5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb9a83VNjFCizbgkGjjERaCp0Afklb2sM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864600229579-pmdiv52vb6sgmijnbtil9cearg7003a5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
